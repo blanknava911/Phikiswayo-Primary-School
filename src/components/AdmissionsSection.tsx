@@ -235,11 +235,11 @@ export const AdmissionsSection: React.FC = () => {
 
             <div className="flex items-center gap-3 shrink-0">
               <a
-                href="tel:0752402030"
+                href="tel:0815091460"
                 className="inline-flex items-center gap-2 bg-white hover:bg-neutral-50 text-neutral-900 border border-neutral-300 font-bold px-4 py-2 rounded-xl text-xs shadow-sm transition"
               >
                 <Phone className="w-3.5 h-3.5 text-[#ff2121]" />
-                <span>075 - 2402030</span>
+                <span>081 509 1460</span>
               </a>
             </div>
           </div>
@@ -565,7 +565,7 @@ export const AdmissionsSection: React.FC = () => {
               {/* Reader Bottom Bar */}
               <div className="mt-8 pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
                 <span>
-                  Address: A348 Khangela Street, Durban, 4360 • Telephone: 075 - 2402030 / 081 509 1460
+                  Address: A348 Khangela Street, Durban, 4360 • Telephone: 081 509 1460
                 </span>
                 <div className="flex items-center gap-3">
                   <button
@@ -599,15 +599,15 @@ export const AdmissionsSection: React.FC = () => {
             Have questions or need to confirm admission dates?
           </h4>
           <p className="text-sm sm:text-base text-neutral-700 mb-6">
-            Call our school office directly at <span className="font-bold text-[#ff2121]">075 - 2402030</span> / <span className="font-bold text-[#ff2121]">081 509 1460</span> or visit us at A348 Khangela Street, Ntuzuma A.
+            Call our school office directly at <span className="font-bold text-[#ff2121]">081 509 1460</span> or visit us at A348 Khangela Street, Ntuzuma A.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="tel:0752402030"
+              href="tel:0815091460"
               className="inline-flex items-center gap-2.5 bg-[#ff2121] hover:bg-[#e01a1a] text-white font-extrabold px-7 py-3.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer"
               id="admissions-call-btn"
             >
-              <span>Call School Office: 075 - 2402030</span>
+              <span>Call School Office: 081 509 1460</span>
             </a>
 
             <a

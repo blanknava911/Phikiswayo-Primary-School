@@ -46,9 +46,11 @@ This application provides parents, learners, educators, and community members wi
 - **Digital Form Preview Modal**: Full-screen image preview generated from the official PDF, with quick open and download actions. This avoids Chrome blocking embedded PDF previews.
 
 #### 5. **Upcoming Events & Calendar (`EventsSection.tsx`)**
-- **Background Updates**: Reads upcoming school events from `public/events.json`, so event updates can be made through GitHub without Supabase or website admin access.
-- **Category Filter Tabs**: Interactive filtering across **All Events**, **Academic**, **Sports & Athletics**, and **Parent Meetings**.
-- **Event Cards**: Rich cards with visual imagery, badge categories, scheduled dates, times, campus locations, and descriptive overviews.
+- **Smart Date Auto-Archiving**: Automatically clears events that have already passed based on the current date, ensuring visitors always see relevant future activities.
+- **Next Event Spotlight & Highlights**: Highlights the nearest upcoming event with a prominent spotlight banner, pulse indicator, countdown badge (`In 9 days`, `Happening Soon`), and featured card border.
+- **Category Filter Tabs with Counts**: Interactive filtering across **All Events**, **Academic**, **Sports & Athletics**, and **Parent Meetings** with live event counters.
+- **Completed Events Archive Toggle**: Parents and staff can optionally toggle to view completed past activities without cluttering the primary upcoming view.
+- **Background Updates**: Reads school events from `public/events.json`, so event updates can be made without complex backends.
 
 #### 6. **News & Notices (`NewsSection.tsx`)**
 - **Announcement Feed**: Dedicated parent-facing notices section for admissions updates, document reminders, and school office notices.

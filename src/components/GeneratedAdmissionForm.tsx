@@ -37,7 +37,7 @@ export const GeneratedAdmissionForm: React.FC<GeneratedAdmissionFormProps> = ({
                 A348 KHANGELA STREET, DURBAN, 4360
               </div>
               <div className="flex flex-wrap gap-x-4 text-[10px] sm:text-[11px] font-medium text-neutral-700 pt-0.5">
-                <span><strong>Telephone:</strong> 075 - 2402030</span>
+                <span><strong>Telephone:</strong> 081 509 1460</span>
                 <span><strong>Fax:</strong> ________________</span>
                 <span><strong>Year:</strong> 2026 / 2027</span>
               </div>
