@@ -149,10 +149,6 @@ export const LegalSection: React.FC<LegalSectionProps> = ({ mode }) => {
             </article>
           </div>
         )}
-
-        <p className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs font-semibold leading-relaxed text-amber-900">
-          This wording is a practical website notice for the school and should be reviewed by the school or legal adviser before being treated as formal legal advice.
-        </p>
       </div>
     </section>
   );

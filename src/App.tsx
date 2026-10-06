@@ -10,6 +10,8 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { CookieNotice } from './components/CookieNotice';
 import { LegalSection } from './components/LegalSection';
+import { AdmissionsNotificationBanner } from './components/AdmissionsNotificationBanner';
+import { FloatingAdmissionsBadge } from './components/FloatingAdmissionsBadge';
 import { publicAssetPath } from './utils/assets';
 
 interface PageHeaderProps {
@@ -52,6 +54,9 @@ export function App() {
   return (
     <div className="min-h-screen flex flex-col font-sans antialiased bg-[#F9F9F9] text-[#1A1A1A]">
       
+      {/* Top Eye-Catching Admissions Notification Announcement */}
+      <AdmissionsNotificationBanner setActiveTab={setActiveTab} />
+
       {/* Main Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -152,6 +157,7 @@ export function App() {
       {/* Footer Section */}
       <Footer setActiveTab={setActiveTab} />
       <CookieNotice setActiveTab={setActiveTab} />
+      <FloatingAdmissionsBadge activeTab={activeTab} setActiveTab={setActiveTab} />
 
     </div>
   );

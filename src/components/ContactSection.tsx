@@ -7,6 +7,7 @@ import {
   Copy,
   Music2
 } from 'lucide-react';
+import { SchoolQueryForm } from './SchoolQueryForm';
 
 export const ContactSection: React.FC = () => {
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -175,6 +176,9 @@ export const ContactSection: React.FC = () => {
           </div>
 
         </div>
+
+        {/* Online Enquiries & Call Back Request Form */}
+        <SchoolQueryForm />
 
       </div>
     </section>

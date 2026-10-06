@@ -84,6 +84,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-neutral-500'}`} />
                 )}
                 <span>{item.label}</span>
+                {item.id === 'admissions' && (
+                  <span className={`text-[10px] font-black uppercase px-1.5 py-0.5 rounded-full flex items-center gap-1 ${
+                    isActive ? 'bg-white text-[#ff2121]' : 'bg-red-100 text-[#ff2121]'
+                  }`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Open
+                  </span>
+                )}
               </button>
             );
           })}
@@ -151,6 +159,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {Icon && <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-[#ff2121]'}`} />}
                   <span>{item.label}</span>
                 </div>
+                {item.id === 'admissions' && (
+                  <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-1 ${
+                    isActive ? 'bg-white text-[#ff2121]' : 'bg-red-100 text-[#ff2121]'
+                  }`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Open
+                  </span>
+                )}
               </button>
             );
           })}

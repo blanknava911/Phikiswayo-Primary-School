@@ -56,12 +56,16 @@ This application provides parents, learners, educators, and community members wi
 - **Announcement Feed**: Dedicated parent-facing notices section for admissions updates, document reminders, and school office notices.
 - **Background Updates**: Reads school notices from `public/notices.json`, so updates can be made through GitHub without a public admin login.
 
-#### 7. **Contact Directory & Community Channels (`ContactSection.tsx`)**
+#### 7. **Contact Directory & Community Channels (`ContactSection.tsx` & `SchoolQueryForm.tsx`)**
 - **Interactive Contact Cards**:
   - **Physical Address**: *348 Khangela St, Ntuzuma A, 4360* with a one-click copy button.
   - **Telephone**: *081 509 1460* with instant call trigger and copy-to-clipboard functionality.
   - **Official Email**: *PHIKISWAYO-PS@kznschools.gov.za* with mailto trigger and copy button.
 - **Social Media Hub**: Prominent links to connect with the school on **Facebook** and **TikTok**.
+- **Interactive Enquiries Desk (`SchoolQueryForm.tsx`)**:
+  - Selectable enquiry modes: **Ask a Question**, **Request a Call Back**, or **Leave a Comment**.
+  - Dynamic fields including preferred call-back time windows (Morning, Midday, Afternoon), learner grade of interest, and message details.
+  - Instant reference number generation (e.g. `PQ-XXXXXX`), submission receipt, mailto link formatting, copy summary action, and local history tracking.
 
 #### 8. **Footer (`Footer.tsx`)**
 - Complete site directory, direct PDF download trigger, physical location details, copyright notices, and a smooth scroll-to-top button.

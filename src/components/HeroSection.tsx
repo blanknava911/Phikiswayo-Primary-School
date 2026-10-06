@@ -32,10 +32,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ setActiveTab }) => {
           {/* Main Hero Content */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left" id="hero-main-content">
             
-            {/* School Tag Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 border border-white/25 text-red-100 text-xs sm:text-sm font-semibold tracking-wide backdrop-blur-sm" id="hero-tag-badge">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span>Public Primary School • Grades R – 7 • Ntuzuma A</span>
+            {/* Live Admissions Alert Ribbon */}
+            <div 
+              onClick={() => setActiveTab('admissions')}
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-red-600/95 hover:bg-red-600 border border-white/40 text-white text-xs sm:text-sm font-extrabold shadow-xl backdrop-blur-md cursor-pointer transition transform hover:-translate-y-0.5 active:scale-95"
+              id="hero-admissions-alert-badge"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-300" />
+              </span>
+              <span>2026/2027 Admissions Open: Now Accepting Grade R – 7 Applications</span>
+              <ArrowRight className="w-4 h-4 text-amber-200" />
             </div>
 
             {/* Main Headline */}
@@ -101,8 +109,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ setActiveTab }) => {
                     Ntuzuma Circuit, KwaZulu-Natal
                   </p>
                 </div>
-                <span className="px-3 py-1 bg-red-50 text-[#ff2121] rounded-full text-xs font-bold border border-red-200">
-                  Open at Office
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-black border border-emerald-300 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Currently Enrolling
                 </span>
               </div>
 
