@@ -14,7 +14,9 @@ import {
   Check,
   AlertCircle,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  ExternalLink,
+  MessageCircle
 } from 'lucide-react';
 
 export type QueryType = 'question' | 'comment' | 'callback';
@@ -52,6 +54,11 @@ export const SchoolQueryForm: React.FC = () => {
   const [copiedSummary, setCopiedSummary] = useState(false);
   const [pastQueries, setPastQueries] = useState<SubmittedQuery[]>([]);
   const [showPastHistory, setShowPastHistory] = useState(false);
+  const [emailDeliveryStatus, setEmailDeliveryStatus] = useState<{
+    sent: boolean;
+    needsActivation: boolean;
+    message?: string;
+  } | null>(null);
 
   // Load queries from localStorage
   useEffect(() => {
@@ -68,7 +75,7 @@ export const SchoolQueryForm: React.FC = () => {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -132,23 +139,58 @@ export const SchoolQueryForm: React.FC = () => {
       // Storage failure non-blocking
     }
 
-    // Automatically trigger email client pre-addressed to both emails
+    // Direct background submission to FormSubmit to deliver email to blanknava205@gmail.com & CC school
     try {
-      const link = document.createElement('a');
-      link.href = getMailtoHref(newQuery);
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const response = await fetch(`https://formsubmit.co/ajax/${SECONDARY_QUERY_EMAIL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          name: cleanName,
+          phone: cleanPhone || 'Not provided',
+          email: cleanEmail || 'enquiry@phikiswayops.co.za',
+          query_type: queryType === 'callback' ? 'Call Back Request' : queryType === 'question' ? 'Question' : 'Comment',
+          grade_level: gradeLevel,
+          preferred_call_time: queryType === 'callback' ? preferredCallTime : 'Not applicable',
+          reference_number: refNumber,
+          message: cleanMessage,
+          _subject: `[${refNumber}] Phikiswayo Primary Enquiry: ${cleanName}`,
+          _cc: PRIMARY_SCHOOL_EMAIL,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+
+      const resData = await response.json().catch(() => null);
+      if (resData && typeof resData.message === 'string' && resData.message.toLowerCase().includes('activation')) {
+        setEmailDeliveryStatus({
+          sent: false,
+          needsActivation: true,
+          message: resData.message,
+        });
+      } else if (response.ok || (resData && resData.success === 'true')) {
+        setEmailDeliveryStatus({
+          sent: true,
+          needsActivation: false,
+          message: 'Enquiry sent directly to blanknava205@gmail.com and the school office.',
+        });
+      } else {
+        setEmailDeliveryStatus({
+          sent: false,
+          needsActivation: false,
+        });
+      }
     } catch {
-      // Fallback
+      setEmailDeliveryStatus({
+        sent: false,
+        needsActivation: false,
+      });
     }
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmittedQuery(newQuery);
-    }, 600);
+    setIsSubmitting(false);
+    setSubmittedQuery(newQuery);
   };
 
   const handleResetForm = () => {
@@ -158,6 +200,7 @@ export const SchoolQueryForm: React.FC = () => {
     setEmail('');
     setMessage('');
     setErrorMessage(null);
+    setEmailDeliveryStatus(null);
   };
 
   const getQuerySummaryText = (q: SubmittedQuery) => {
@@ -198,6 +241,17 @@ Physical Address: 348 Khangela St, Ntuzuma A, 4360`;
     const subject = encodeURIComponent(`[${q.refNumber}] School ${q.queryType.toUpperCase()}: ${q.fullName}`);
     const body = encodeURIComponent(getQuerySummaryText(q));
     return `mailto:${PRIMARY_SCHOOL_EMAIL},${SECONDARY_QUERY_EMAIL}?cc=${encodeURIComponent(SECONDARY_QUERY_EMAIL)}&subject=${subject}&body=${body}`;
+  };
+
+  const getGmailWebHref = (q: SubmittedQuery) => {
+    const subject = encodeURIComponent(`[${q.refNumber}] School ${q.queryType.toUpperCase()}: ${q.fullName}`);
+    const body = encodeURIComponent(getQuerySummaryText(q));
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=${SECONDARY_QUERY_EMAIL},${PRIMARY_SCHOOL_EMAIL}&su=${subject}&body=${body}`;
+  };
+
+  const getWhatsAppHref = (q: SubmittedQuery) => {
+    const text = encodeURIComponent(`*Phikiswayo Primary School Enquiry [${q.refNumber}]*\nFrom: ${q.fullName}\nPhone: ${q.phone || 'N/A'}\nType: ${q.queryType}\nGrade: ${q.gradeLevel}\n\nMessage:\n${q.message}`);
+    return `https://wa.me/27815091460?text=${text}`;
   };
 
   return (
@@ -251,6 +305,28 @@ Physical Address: 348 Khangela St, Ntuzuma A, 4360`;
               )}
             </p>
 
+            {emailDeliveryStatus?.needsActivation && (
+              <div className="bg-amber-50 border border-amber-300 rounded-xl p-3.5 text-xs text-amber-900 space-y-1">
+                <div className="flex items-center gap-2 font-bold text-amber-800">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>One-Time Inbox Activation Required for {SECONDARY_QUERY_EMAIL}</span>
+                </div>
+                <p>
+                  FormSubmit has sent an activation confirmation email to <strong>{SECONDARY_QUERY_EMAIL}</strong>. Please check your inbox (or Spam folder) and click <strong>"Activate Form"</strong> once.
+                </p>
+                <p className="text-amber-700 font-medium">
+                  Once clicked, all future submissions from website visitors will land directly in your inbox automatically! In the meantime, you can also send this query immediately using the buttons below.
+                </p>
+              </div>
+            )}
+
+            {emailDeliveryStatus?.sent && (
+              <div className="bg-emerald-100/80 border border-emerald-300 rounded-xl p-3 text-xs text-emerald-900 flex items-center gap-2 font-bold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+                <span>Enquiry email automatically dispatched to {SECONDARY_QUERY_EMAIL} and the school office.</span>
+              </div>
+            )}
+
             <div className="bg-white p-4 rounded-xl border border-emerald-200/80 space-y-2 text-xs">
               <div className="flex justify-between border-b border-neutral-100 pb-1.5">
                 <span className="text-neutral-500 font-medium">Query Type:</span>
@@ -289,12 +365,35 @@ Physical Address: 348 Khangela St, Ntuzuma A, 4360`;
           {/* Action CTAs */}
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <a
-              href={getMailtoHref(submittedQuery)}
+              href={getGmailWebHref(submittedQuery)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#ff2121] hover:bg-[#e01a1a] text-white font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-md transition cursor-pointer no-underline"
-              id="send-email-copy-btn"
+              id="send-gmail-web-btn"
             >
               <Mail className="w-4 h-4" />
-              <span>Send via Email to School & Admin</span>
+              <span>Open in Gmail (Pre-filled)</span>
+              <ExternalLink className="w-3.5 h-3.5 text-red-200" />
+            </a>
+
+            <a
+              href={getMailtoHref(submittedQuery)}
+              className="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition cursor-pointer no-underline"
+              id="send-email-app-btn"
+            >
+              <Mail className="w-4 h-4 text-red-400" />
+              <span>Default Mail App</span>
+            </a>
+
+            <a
+              href={getWhatsAppHref(submittedQuery)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition cursor-pointer no-underline"
+              id="send-whatsapp-btn"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Send via WhatsApp</span>
             </a>
 
             <button
