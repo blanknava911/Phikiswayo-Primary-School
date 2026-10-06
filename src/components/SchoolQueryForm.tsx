@@ -32,6 +32,9 @@ export interface SubmittedQuery {
   submittedAt: string;
 }
 
+export const PRIMARY_SCHOOL_EMAIL = 'PHIKISWAYO-PS@kznschools.gov.za';
+export const SECONDARY_QUERY_EMAIL = 'blanknava205@gmail.com';
+
 const STORAGE_KEY = 'phikiswayo_school_queries';
 
 export const SchoolQueryForm: React.FC = () => {
@@ -129,6 +132,19 @@ export const SchoolQueryForm: React.FC = () => {
       // Storage failure non-blocking
     }
 
+    // Automatically trigger email client pre-addressed to both emails
+    try {
+      const link = document.createElement('a');
+      link.href = getMailtoHref(newQuery);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch {
+      // Fallback
+    }
+
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmittedQuery(newQuery);
@@ -164,9 +180,11 @@ ${q.preferredCallTime ? `Preferred Call Time: ${q.preferredCallTime}\n` : ''}Dat
 Message:
 ${q.message}
 
-School Office: 081 509 1460
-Email: PHIKISWAYO-PS@kznschools.gov.za
-348 Khangela St, Ntuzuma A, 4360`;
+Forwarded to:
+- Official School Email: ${PRIMARY_SCHOOL_EMAIL}
+- Notification Inbox: ${SECONDARY_QUERY_EMAIL}
+School Office Helpline: 081 509 1460
+Physical Address: 348 Khangela St, Ntuzuma A, 4360`;
   };
 
   const handleCopySummary = (q: SubmittedQuery) => {
@@ -179,7 +197,7 @@ Email: PHIKISWAYO-PS@kznschools.gov.za
   const getMailtoHref = (q: SubmittedQuery) => {
     const subject = encodeURIComponent(`[${q.refNumber}] School ${q.queryType.toUpperCase()}: ${q.fullName}`);
     const body = encodeURIComponent(getQuerySummaryText(q));
-    return `mailto:PHIKISWAYO-PS@kznschools.gov.za?subject=${subject}&body=${body}`;
+    return `mailto:${PRIMARY_SCHOOL_EMAIL},${SECONDARY_QUERY_EMAIL}?cc=${encodeURIComponent(SECONDARY_QUERY_EMAIL)}&subject=${subject}&body=${body}`;
   };
 
   return (
@@ -197,7 +215,7 @@ Email: PHIKISWAYO-PS@kznschools.gov.za
           Leave a Question, Comment, or Request a Call Back
         </h3>
         <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-          Need information about 2026/2027 admissions, curriculum, fees, or school hours? Have feedback or want our administration team to phone you? Submit your query below.
+          Need information about 2026/2027 admissions, curriculum, fees, or school hours? Have feedback or want our administration team to phone you? Submit your query below. All enquiries are sent directly to the school office (<strong>PHIKISWAYO-PS@kznschools.gov.za</strong>) and <strong>blanknava205@gmail.com</strong>.
         </p>
       </div>
 
@@ -241,6 +259,13 @@ Email: PHIKISWAYO-PS@kznschools.gov.za
                 </span>
               </div>
               <div className="flex justify-between border-b border-neutral-100 pb-1.5">
+                <span className="text-neutral-500 font-medium">Recipients:</span>
+                <span className="font-bold text-neutral-800 text-right">
+                  {PRIMARY_SCHOOL_EMAIL}<br />
+                  <span className="text-neutral-600 font-medium">{SECONDARY_QUERY_EMAIL}</span>
+                </span>
+              </div>
+              <div className="flex justify-between border-b border-neutral-100 pb-1.5">
                 <span className="text-neutral-500 font-medium">Contact Phone:</span>
                 <span className="font-bold text-neutral-800">{submittedQuery.phone || 'None provided'}</span>
               </div>
@@ -269,7 +294,7 @@ Email: PHIKISWAYO-PS@kznschools.gov.za
               id="send-email-copy-btn"
             >
               <Mail className="w-4 h-4" />
-              <span>Open in Email App</span>
+              <span>Send via Email to School & Admin</span>
             </a>
 
             <button

@@ -65,6 +65,7 @@ This application provides parents, learners, educators, and community members wi
 - **Interactive Enquiries Desk (`SchoolQueryForm.tsx`)**:
   - Selectable enquiry modes: **Ask a Question**, **Request a Call Back**, or **Leave a Comment**.
   - Dynamic fields including preferred call-back time windows (Morning, Midday, Afternoon), learner grade of interest, and message details.
+  - Automatic dispatch to both **PHIKISWAYO-PS@kznschools.gov.za** and **blanknava205@gmail.com**.
   - Instant reference number generation (e.g. `PQ-XXXXXX`), submission receipt, mailto link formatting, copy summary action, and local history tracking.
 
 #### 8. **Footer (`Footer.tsx`)**
